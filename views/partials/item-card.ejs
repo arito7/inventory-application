@@ -1,0 +1,26 @@
+<div class="card blue lighten-5">
+  <div class="card-content">
+    <table>
+      <tbody>
+        <tr>
+          <td colspan="2" style="font-weight: bold"><%= item.name %></td>
+        </tr>
+
+        <% if (item.description) { %>
+        <tr>
+          <td colspan="2"><%= item.description %></td>
+        </tr>
+        <% } %>
+
+        <tr>
+          <th>Price</th>
+          <td class="right-align">$<%= item.price %></td>
+        </tr>
+        <tr>
+          <th>Stock</th>
+          <td class="right-align"><%= item.number_in_stock %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
