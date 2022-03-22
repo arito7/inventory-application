@@ -62,5 +62,27 @@ exports.categories_get = (req, res, next) => {
 };
 
 exports.detail_get = (req, res, next) => {
-  res.send('Not implemented yet');
+  async.parallel(
+    {
+      category: (cb) => {
+        Category.findById(req.params.id).exec(cb);
+      },
+      category_items: (cb) => {
+        Item.find({ categories: { $all: req.params.id } })
+          .populate('categories')
+          .exec(cb);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        next(err);
+      }
+      console.log(results.category_items);
+      res.render('category', {
+        title: `${results.category.name} Detail`,
+        category: results.category,
+        category_items: results.category_items,
+      });
+    }
+  );
 };
