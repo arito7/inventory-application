@@ -28,6 +28,15 @@ exports.delete_post = (req, res, next) => {
 };
 
 exports.categories_get = (req, res, next) => {
+  Category.find((err, results) => {
+    if (err) {
+      return next(err);
+    }
+    res.render('categories', {
+      title: 'Categories',
+      categories: results,
+    });
+  });
 };
 
 exports.detail_get = (req, res, next) => {
