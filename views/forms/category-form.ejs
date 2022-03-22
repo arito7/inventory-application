@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <%- include('../partials/head', {title}) %>
+  <body class="grey lighten-4">
+    <%- include('../partials/header', {title}) %>
+
+    <div class="row">
+      <div class="col m3"><%- include('../partials/sidenav') %></div>
+      <div class="col s12 m9">
+        <div class="row">
+          <div class="col s12">
+            <h2><%= title %></h2>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <form action="" method="post">
+              <div class="input-field col s12">
+                <label for="name">Name</label>
+                <input
+                  id="name"
+                  value="<%= locals.item ? item.name : '' %>"
+                  type="text"
+                  name="name"
+                  minlength="3"
+                  required
+                />
+              </div>
+
+              <div class="input-field col s12 center-align">
+                <button type="submit" class="btn">Add</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
