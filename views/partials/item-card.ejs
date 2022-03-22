@@ -8,7 +8,14 @@
           </td>
         </tr>
 
-        <% if (item.description) { %>
+        <% if (item.categories.length > 0) { %>
+        <tr>
+          <td colspan="4">
+            <% item.categories.forEach(category => { %> <%-
+            include('./category-chip',{category}) %> <% }) %>
+          </td>
+        </tr>
+        <% } %> <% if (item.description) { %>
         <tr>
           <td colspan="4"><%= item.description %></td>
         </tr>
