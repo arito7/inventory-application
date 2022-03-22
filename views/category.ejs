@@ -11,10 +11,18 @@
           <h1><%= title %></h1>
         </div>
 
+        <div class="row">
+          <div class="col s6 center-align">
+            <a href="<%= category.url %>/update" class="btn blue">Update</a>
+          </div>
+          <div class="col s6 center-align">
+            <a href="<%= category.url %>/delete" class="btn red">Delete</a>
+          </div>
+        </div>
+
         <div class="col s12">
-          <% category_items.forEach(item => { %> 
-          <%- include('./partials/item-card', {item}) %> 
-          <% }) %>
+          <% category_items.forEach(item => { %> <%-
+          include('./partials/item-card', {item}) %> <% }) %>
         </div>
       </div>
     </div>
