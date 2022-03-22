@@ -65,5 +65,13 @@ exports.items_get = (req, res, next) => {
 };
 
 exports.detail_get = (req, res, next) => {
-  res.send('Not implemented yet');
+  Item.findById(req.params.id)
+    .populate('categories')
+    .exec((err, item) => {
+      console.log(err);
+      if (err) {
+        return next(err);
+      }
+      res.render('item', { title: 'Item Details', item: item });
+    });
 };
