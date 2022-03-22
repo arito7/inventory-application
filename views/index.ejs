@@ -4,14 +4,7 @@
   <body class="grey lighten-4">
     <%- include('./partials/header',{title}) %>
     <div class="row">
-      <div class="col m3">
-        <ul>
-          <li><a href="/catalog/items">Items</a></li>
-          <li>
-            <a class="waves-effect" href="/catalog/categories">Categories</a>
-          </li>
-        </ul>
-      </div>
+      <div class="col m3"><%- include('./partials/sidenav') %></div>
       <div class="col s12 m9">
         <h1><%= title %></h1>
 
