@@ -7,9 +7,9 @@ const categoryController = require('../controllers/categoryController');
 
 router.get('/', itemController.index);
 
-router.get('/item/:id/create', itemController.create_get);
+router.get('/item/create', itemController.create_get);
 
-router.post('/item/:id/create', itemController.create_post);
+router.post('/item/create', itemController.create_post);
 
 router.get('/item/:id/update', itemController.update_get);
 
@@ -25,9 +25,9 @@ router.get('/items', itemController.items_get);
 
 // CATEGORY ROUTES
 
-router.get('/category/:id/create', categoryController.create_get);
+router.get('/category/create', categoryController.create_get);
 
-router.post('/category/:id/create', categoryController.create_post);
+router.post('/category/create', categoryController.create_post);
 
 router.get('/category/:id/update', categoryController.update_get);
 
