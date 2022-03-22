@@ -49,7 +49,19 @@ exports.delete_post = (req, res, next) => {
 };
 
 exports.items_get = (req, res, next) => {
-  res.send('Not implemented yet');
+  async.parallel(
+    {
+      items: (cb) => {
+        Item.find().populate('categories').exec(cb);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      res.render('items', { title: 'Items', items: results.items });
+    }
+  );
 };
 
 exports.detail_get = (req, res, next) => {
