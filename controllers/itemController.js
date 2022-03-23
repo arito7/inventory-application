@@ -71,6 +71,7 @@ exports.create_post = [
       categories: req.body.categories,
       price: req.body.price,
       number_in_stock: req.body.number_in_stock,
+      img_filename: req.file.filename,
     });
 
     if (!errors.isEmpty()) {
@@ -87,11 +88,11 @@ exports.create_post = [
         });
       });
     } else {
-      item.save((err) => {
+      item.save((err, item) => {
         if (err) {
           next(err);
         }
-        res.redirect('/catalog/items');
+        res.redirect(item.url);
       });
     }
   },
@@ -150,6 +151,7 @@ exports.update_post = [
         typeof req.body.categories === 'undefined' ? [] : req.body.categories,
       price: req.body.price,
       number_in_stock: req.body.number_in_stock,
+      img_filename: req.file.filename,
       _id: req.params.id,
     });
     if (errors.isEmpty()) {
