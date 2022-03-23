@@ -3,6 +3,31 @@ const Category = require('../models/Category');
 const async = require('async');
 const { body, validationResult } = require('express-validator');
 
+const itemValidationSchema = [
+  body('name', 'Item name must not be empty')
+    .trim()
+    .isLength({ min: 3 })
+    .withMessage('Item name must be at least 3 characters long.')
+    .trim()
+    .escape(),
+  body('categories.*').trim().escape(),
+  body('price')
+    .isCurrency({
+      digits_after_decimal: [1, 2],
+      require_decimal: false,
+      require_symbol: false,
+    })
+    .trim()
+    .escape(),
+  body('number_in_stock')
+    .isNumeric()
+    .withMessage('Stock count must be a number')
+    .isInt({ min: 0 })
+    .withMessage('The minimum stock is 0')
+    .trim()
+    .optional()
+    .escape(),
+];
 exports.index = function (req, res) {
   async.parallel(
     {
