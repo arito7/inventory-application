@@ -28,6 +28,7 @@ const itemValidationSchema = [
     .optional()
     .escape(),
 ];
+
 exports.index = function (req, res) {
   async.parallel(
     {
@@ -96,12 +97,75 @@ exports.create_post = [
 ];
 
 exports.update_get = (req, res, next) => {
-  res.send('Not implemented yet');
+  async.parallel(
+    {
+      item: (cb) => {
+        Item.findById(req.params.id).populate('categories').exec(cb);
+      },
+      categories: (cb) => {
+        Category.find(cb);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        next(err);
+      }
+      results.categories.forEach((c) => {
+        if (
+          results.item.categories.findIndex(
+            (i) => i._id.toString() === c._id.toString()
+          ) > -1
+        ) {
+          c.checked = true;
+        }
+      });
+      res.render('forms/item-form', {
+        title: 'Update Item',
+        item: results.item,
+        categories: results.categories,
+      });
+    }
+  );
 };
 
-exports.update_post = (req, res, next) => {
-  res.send('Not implemented yet');
-};
+exports.update_post = [
+  (req, res, next) => {
+    if (!(req.body.categories instanceof Array)) {
+      if (typeof req.body.categories === 'undefined') {
+        req.body.categories = [];
+      } else {
+        req.body.categories = new Array(req.body.categories);
+      }
+    }
+    next();
+  },
+  itemValidationSchema,
+  (req, res, next) => {
+    console.log(req.body.categories);
+    const errors = validationResult(req);
+    const item = new Item({
+      name: req.body.name,
+      description: req.body.description,
+      categories:
+        typeof req.body.categories === 'undefined' ? [] : req.body.categories,
+      price: req.body.price,
+      number_in_stock: req.body.number_in_stock,
+      _id: req.params.id,
+    });
+    if (errors.isEmpty()) {
+      Item.findByIdAndUpdate(req.params.id, item)
+        .populate('categories')
+        .exec((err, theItem) => {
+          if (err) {
+            next(err);
+          }
+          res.render('item', { title: 'Item Updated', item: theItem });
+        });
+    } else {
+      res.render('item-form', { title: 'Update Item', item, errors });
+    }
+  },
+];
 
 exports.delete_get = (req, res, next) => {
   Item.findById(req.params.id)
@@ -143,7 +207,6 @@ exports.detail_get = (req, res, next) => {
   Item.findById(req.params.id)
     .populate('categories')
     .exec((err, item) => {
-      console.log(err);
       if (err) {
         return next(err);
       }
