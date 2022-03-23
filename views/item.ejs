@@ -19,7 +19,17 @@
               <div class="col s12">
                 <table>
                   <tbody>
-                    <tr>
+                    <% if (item.img_filename) { %>
+                    <tr style="border-bottom: none">
+                      <img
+                        class="responsive-img"
+                        src="<%= item.img_url %>"
+                        alt="Item image"
+                      />
+                    </tr>
+                    <% } %>
+
+                    <tr style="border-top: none">
                       <th>Name</th>
                       <td><%= item.name %></td>
                     </tr>
