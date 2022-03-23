@@ -1,16 +1,19 @@
 <div class="card blue lighten-5" style="border-radius: 1rem; box-shadow: none">
-  <div class="card-content" style="padding-top: 0; padding-bottom: 0">
+  <div
+    class="card-content"
+    style="padding-bottom: 0.75rem; padding-top: 0.75rem"
+  >
     <table>
       <tbody>
         <tr style="border-bottom: none">
-          <td colspan="4" style="font-weight: bold">
-            <a href="<%= item.url %>"> <%= item.name %> </a>
+          <td colspan="4" style="font-weight: bold; font-size: 1.5rem">
+            <a href="<%= item.url %>"><%= item.name %></a>
           </td>
         </tr>
 
         <% if (item.categories.length > 0) { %>
         <tr style="border: none">
-          <td colspan="4">
+          <td colspan="4" style="padding-bottom: 0; padding-top: 0">
             <% item.categories.forEach(category => { %> <%-
             include('./category-chip',{category}) %> <% }) %>
           </td>
