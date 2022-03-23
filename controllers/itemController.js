@@ -141,7 +141,6 @@ exports.update_post = [
   },
   itemValidationSchema,
   (req, res, next) => {
-    console.log(req.body.categories);
     const errors = validationResult(req);
     const item = new Item({
       name: req.body.name,
@@ -153,14 +152,12 @@ exports.update_post = [
       _id: req.params.id,
     });
     if (errors.isEmpty()) {
-      Item.findByIdAndUpdate(req.params.id, item)
-        .populate('categories')
-        .exec((err, theItem) => {
-          if (err) {
-            next(err);
-          }
-          res.render('item', { title: 'Item Updated', item: theItem });
-        });
+      Item.findByIdAndUpdate(req.params.id, item).exec((err, theItem) => {
+        if (err) {
+          next(err);
+        }
+        res.redirect(theItem.url);
+      });
     } else {
       res.render('item-form', { title: 'Update Item', item, errors });
     }
