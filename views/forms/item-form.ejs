@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <%- include('../partials/head', {title}) %>
+  <body class="grey lighten-5">
+    <%- include('../partials/header', {title}) %>
+
+    <div class="row">
+      <div class="col m3"><%- include('../partials/sidenav') %></div>
+
+      <div class="col s12 m9">
+        <div class="row">
+          <div class="col s12">
+            <h2 class="center-align"><%= title %></h2>
+          </div>
+        </div>
+
+        <div class="row">
+          <%- include('../partials/required-field-card') %>
+
+          <div class="col s12">
+            <form action="" method="post">
+              <div class="input-field col s12">
+                <label for="name">Name(*)</label>
+                <input
+                  class="validate"
+                  id="name"
+                  value="<%= locals.item ? item.name : '' %>"
+                  type="text"
+                  name="name"
+                  minlength="3"
+                  required
+                />
+              </div>
+
+              <div class="input-field col s12">
+                <textarea
+                  class="materialize-textarea"
+                  type="text"
+                  id="description"
+                  name="description"
+                >
+<%= locals.item ? item.description : '' %></textarea
+                >
+                <label for="description">Description</label>
+              </div>
+
+              <div class="input-field col s12">
+                <fieldset>
+                  <legend>Category(*)</legend>
+                  <% categories.forEach(category => { %>
+                  <p class="col s12 m6 l4 xl3">
+                    <label>
+                      <input class="filled-in" type="checkbox" name="category"
+                      <%= category.checked ? 'checked' : '' %> value="<%=
+                      category._id %>" />
+                      <span class="valign-wrapper"><%= category.name %></span>
+                    </label>
+                  </p>
+                  <% }) %>
+                </fieldset>
+              </div>
+
+              <div class="input-field col s12">
+                <label for="price">Price</label>
+                <input
+                  class="validate"
+                  id="price"
+                  name="price"
+                  type="number"
+                  min=".01"
+                  step=".01"
+                  required
+                  value="<%= locals.item ? item.price : '' %>"
+                />
+              </div>
+
+              <div class="input-field col s12">
+                <label for="stock">Number in stock</label>
+                <input
+                  class="validate"
+                  required
+                  id="stock"
+                  name="number_in_stock"
+                  min="0"
+                  type="number"
+                  step="1"
+                  value="<%= locals.item ? item.number_in_stock : '' %>"
+                />
+              </div>
+
+              <div class="input-field col s12 center-align">
+                <button class="btn" type="submit">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
