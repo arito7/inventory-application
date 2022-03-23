@@ -50,12 +50,50 @@ exports.index = function (req, res) {
 };
 
 exports.create_get = (req, res, next) => {
-  res.send('Not implemented yet');
+  Category.find((err, categories) => {
+    if (err) {
+      next(err);
+    }
+    res.render('./forms/item-form', { title: 'Add New Item', categories });
+  });
 };
 
-exports.create_post = (req, res, next) => {
-  res.send('Not implemented yet');
-};
+exports.create_post = [
+  itemValidationSchema,
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    const item = new Item({
+      name: req.body.name,
+      description: req.body.description,
+      categories: req.body.categories,
+      price: req.body.price,
+      number_in_stock: req.body.number_in_stock,
+    });
+
+    if (!errors.isEmpty()) {
+      console.log('There were errors:', errors.array());
+      Category.find((err, categories) => {
+        if (err) {
+          next(err);
+        }
+        res.render('forms/item-form', {
+          title: 'Add New Item',
+          item,
+          categories,
+          errors: errors.array(),
+        });
+      });
+    } else {
+      item.save((err) => {
+        if (err) {
+          next(err);
+        }
+        res.redirect('/catalog/items');
+      });
+    }
+  },
+];
 
 exports.update_get = (req, res, next) => {
   res.send('Not implemented yet');
