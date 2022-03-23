@@ -3,7 +3,7 @@ const Category = require('../models/Category');
 const async = require('async');
 const { body, validationResult } = require('express-validator');
 
-const genreValidationSchema = [
+const categoryValidationSchema = [
   body('name', 'Name must not be empty').trim().isLength({ min: 3 }).escape(),
 ];
 
@@ -12,7 +12,7 @@ exports.create_get = (req, res, next) => {
 };
 
 exports.create_post = [
-  genreValidationSchema,
+  categoryValidationSchema,
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -34,12 +34,27 @@ exports.create_post = [
 ];
 
 exports.update_get = (req, res, next) => {
-  res.send('Not implemented yet');
+  Category.findById(req.params.id).exec((err, category) => {
+    if (err) {
+      next(err);
+    }
+    res.render('forms/category-form', { title: 'Update Category', category });
+  });
 };
 
-exports.update_post = (req, res, next) => {
-  res.send('Not implemented yet');
-};
+exports.update_post = [
+  categoryValidationSchema,
+  (req, res, next) => {
+    Category.findByIdAndUpdate(req.params.id, { name: req.body.name }).exec(
+      (err) => {
+        if (err) {
+          next(err);
+        }
+        res.redirect('/catalog/categories');
+      }
+    );
+  },
+];
 
 exports.delete_get = (req, res, next) => {
   res.send('Not implemented yet');
@@ -77,7 +92,6 @@ exports.detail_get = (req, res, next) => {
       if (err) {
         next(err);
       }
-      console.log(results.category_items);
       res.render('category', {
         title: `${results.category.name} Detail`,
         category: results.category,
