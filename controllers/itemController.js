@@ -32,7 +32,7 @@ exports.index = function (req, res) {
   async.parallel(
     {
       items: (cb) => {
-        Item.find(cb);
+        Item.find().populate('categories').exec(cb);
       },
       categories: (cb) => {
         Category.find(cb);
