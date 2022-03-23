@@ -3,11 +3,10 @@
   <%- include('../partials/head', {title}) %>
   <body class="grey lighten-5">
     <%- include('../partials/header', {title}) %>
+    <main>
+      <div class="container">
+        <%- include('../partials/sidenav') %>
 
-    <div class="row">
-      <div class="col m3"><%- include('../partials/sidenav') %></div>
-
-      <div class="col s12 m9">
         <div class="row">
           <div class="col s12">
             <h2 class="center-align"><%= title %></h2>
@@ -18,7 +17,7 @@
           <%- include('../partials/required-field-card') %>
 
           <div class="col s12">
-            <form action="" method="post">
+            <form action="" method="post" enctype="multipart/form-data">
               <div class="input-field col s12">
                 <label for="name">Name(*)</label>
                 <input
@@ -39,7 +38,7 @@
                   id="description"
                   name="description"
                 >
-<%= locals.item ? item.description : '' %></textarea
+    <%= locals.item ? item.description : '' %></textarea
                 >
                 <label for="description">Description</label>
               </div>
@@ -88,6 +87,30 @@
                 />
               </div>
 
+              <div class="file-field input-field col s12">
+                <div class="btn">
+                  <span>File</span>
+                  <input type="file" name="image" id="image" />
+                </div>
+                <div class="file-path-wrapper">
+                  <input
+                    type="text"
+                    class="file-path validate"
+                    value="<%= locals.item ? item.img_filename : '' %>"
+                  />
+                </div>
+              </div>
+
+              <% if (locals.item && item.img_filename) { %>
+              <div class="col s12 input-field">
+                <img
+                  src="<%= item.img_url %>"
+                  alt="Item Image"
+                  class="responsive-img"
+                />
+              </div>
+              <% } %>
+
               <div class="input-field col s12 center-align">
                 <button class="btn" type="submit">Submit</button>
               </div>
@@ -95,6 +118,6 @@
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </body>
 </html>
