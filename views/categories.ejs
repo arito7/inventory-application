@@ -3,31 +3,36 @@
   <%- include('./partials/head', {title}) %>
   <body class="grey lighten-4">
     <%- include('./partials/header', {title}) %>
-    <div class="row">
-      <div class="col m3"><%- include('./partials/sidenav') %></div>
-      <div class="col s12 m9">
-        <div class="col s12">
-          <h2>Categories</h2>
+    <main>
+      <div class="container">
+        <%- include('./partials/sidenav') %>
+
+        <div class="row center-align">
+          <div class="col s12">
+            <h2>Categories</h2>
+          </div>
         </div>
 
-        <div class="col s12">
-          <ul>
-            <% if (categories.length > 0) {categories.forEach(category => { %>
-            <li class="chip hoverable green lighten-4">
-              <a class="green-text" href="<%= category.url %>">
-                <%= category.name %>
-              </a>
-            </li>
-            <% })} else { %>
-            <p>Currently there are no categories</p>
-            <p>Click the button to add a new category</p>
-            <a href="/catalog/category/create" class="btn"
-              >Add a new category</a
-            >
-            <% } %>
-          </ul>
+        <div class="row center-align">
+          <div class="col s12">
+            <ul>
+              <% if (categories.length > 0) {categories.forEach(category => { %>
+              <li class="chip hoverable green lighten-4">
+                <a class="green-text" href="<%= category.url %>">
+                  <%= category.name %>
+                </a>
+              </li>
+              <% })} else { %>
+              <p>Currently there are no categories</p>
+              <p>Click the button to add a new category</p>
+              <a href="/catalog/category/create" class="btn"
+                >Add a new category</a
+              >
+              <% } %>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   </body>
 </html>
