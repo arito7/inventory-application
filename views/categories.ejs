@@ -7,22 +7,24 @@
       <div class="col m3"><%- include('./partials/sidenav') %></div>
       <div class="col s12 m9">
         <div class="col s12">
-          <h1><%= title %></h1>
-        </div>
-
-        <div class="col s12">
           <h2>Categories</h2>
         </div>
 
         <div class="col s12">
           <ul>
-            <% categories.forEach(category => { %>
+            <% if (categories.length > 0) {categories.forEach(category => { %>
             <li class="chip hoverable green lighten-4">
               <a class="green-text" href="<%= category.url %>">
                 <%= category.name %>
               </a>
             </li>
-            <% }) %>
+            <% })} else { %>
+            <p>Currently there are no categories</p>
+            <p>Click the button to add a new category</p>
+            <a href="/catalog/category/create" class="btn"
+              >Add a new category</a
+            >
+            <% } %>
           </ul>
         </div>
       </div>
