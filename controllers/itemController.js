@@ -104,11 +104,23 @@ exports.update_post = (req, res, next) => {
 };
 
 exports.delete_get = (req, res, next) => {
-  res.send('Not implemented yet');
+  Item.findById(req.params.id)
+    .populate('categories')
+    .exec((err, item) => {
+      if (err) {
+        next(err);
+      }
+      res.render('./delete/item-delete', { title: 'Delete Item', item });
+    });
 };
 
 exports.delete_post = (req, res, next) => {
-  res.send('Not implemented yet');
+  Item.findByIdAndDelete(req.params.id).exec((err) => {
+    if (err) {
+      next(err);
+    }
+    res.redirect('/catalog/items');
+  });
 };
 
 exports.items_get = (req, res, next) => {
