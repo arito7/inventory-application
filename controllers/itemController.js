@@ -27,6 +27,7 @@ const itemValidationSchema = [
     .trim()
     .optional()
     .escape(),
+  body('image_path').trim().escape().optional(),
 ];
 
 exports.index = function (req, res) {
