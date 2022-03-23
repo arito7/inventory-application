@@ -57,11 +57,35 @@ exports.update_post = [
 ];
 
 exports.delete_get = (req, res, next) => {
-  res.send('Not implemented yet');
+  async.parallel(
+    {
+      category: (cb) => {
+        Category.findById(req.params.id).exec(cb);
+      },
+      count: (cb) => {
+        Item.find({ categories: { $all: req.params.id } }).count(cb);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        next(err);
+      }
+      res.render('delete/category-delete', {
+        title: 'Delete Category',
+        count: results.count,
+        category: results.category,
+      });
+    }
+  );
 };
 
 exports.delete_post = (req, res, next) => {
-  res.send('Not implemented yet');
+  Category.findByIdAndDelete(req.params.id).exec((err) => {
+    if (err) {
+      next(err);
+    }
+    res.redirect('/catalog/categories');
+  });
 };
 
 exports.categories_get = (req, res, next) => {

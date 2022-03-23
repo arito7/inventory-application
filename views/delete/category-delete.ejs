@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <%- include('../partials/head', {title}) %>
+  <body class="grey lighten-4">
+    <%- include('../partials/header', {title}) %>
+    <div class="row">
+      <div class="col m3"><%- include('../partials/sidenav') %></div>
+
+      <div class="col s12 m9">
+        <div class="col s12 center-align">
+          <h3><%= title %></h3>
+        </div>
+      </div>
+
+      <div class="col s12">
+        <h2 class="center-align"><%= category.name %></h2>
+      </div>
+
+      <div class="col s12">
+        <p class="center-align">
+          There are <%= count %> items belonging to this category.
+        </p>
+      </div>
+
+      <div class="col s12 center-align">
+        <form action="" method="post">
+          <input
+            type="text"
+            hidden
+            disabled
+            value="<%= category._id %>"
+            name="id"
+          />
+          <button type="submit" class="btn red">Delete</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
