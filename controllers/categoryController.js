@@ -7,12 +7,33 @@ const categoryValidationSchema = [
   body('name', 'Name must not be empty').trim().isLength({ min: 3 }).escape(),
 ];
 
+const checkForPreexistingCategory = (req, res, next) => {
+  Category.exists({ name: req.body.name }).exec((err, exists) => {
+    if (err) {
+      next(err);
+    }
+    if (exists) {
+      const error = new Error(
+        `The category "${req.body.name}" already exists.`
+      );
+      console.log(req.method, req.url);
+      res.render('forms/category-form', {
+        title: 'Create Category',
+        errors: [error],
+      });
+    } else {
+      next();
+    }
+  });
+};
+
 exports.create_get = (req, res, next) => {
   res.render('./forms/category-form', { title: 'Create Category' });
 };
 
 exports.create_post = [
   categoryValidationSchema,
+  checkForPreexistingCategory,
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -44,6 +65,7 @@ exports.update_get = (req, res, next) => {
 
 exports.update_post = [
   categoryValidationSchema,
+  checkForPreexistingCategory,
   (req, res, next) => {
     Category.findByIdAndUpdate(req.params.id, { name: req.body.name }).exec(
       (err) => {
@@ -117,7 +139,7 @@ exports.detail_get = (req, res, next) => {
         next(err);
       }
       res.render('category', {
-        title: `${results.category.name} Detail`,
+        title: `${results.category.name}`,
         category: results.category,
         category_items: results.category_items,
       });
