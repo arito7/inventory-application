@@ -50,10 +50,10 @@
                   <% categories.forEach(category => { %>
                   <p class="col s12 m6 l4 xl3">
                     <label>
-                      <input class="filled-in" type="checkbox" name="category"
+                      <input class="filled-in" type="checkbox" name="categories"
                       <%= category.checked ? 'checked' : '' %> value="<%=
                       category._id %>" />
-                      <span class="valign-wrapper"><%= category.name %></span>
+                      <span><%= category.name %></span>
                     </label>
                   </p>
                   <% }) %>
