@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
+const compression = require('compression');
 
 const dev_db_url =
   'mongodb+srv://dev:devpass123@inventory-application.rj36g.mongodb.net/devdb?retryWrites=true&w=majority';
@@ -27,6 +29,8 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(compression());
+app.use(helmet());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
