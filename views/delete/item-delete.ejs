@@ -4,13 +4,15 @@
   <body class="grey lighten-4">
     <%- include('../partials/header', { title }) %>
 
-    <div class="row">
-      <div class="col m3"><%- include('../partials/sidenav') %></div>
-      <div class="col s12 m9">
-        <div class="row">
-          <div class="col s12">
-            <h1><%= item.name %></h1>
-          </div>
+    <main>
+      <%- include('../partials/sidenav') %>
+
+      <div class="row center-align">
+        <% if (locals.errors) { %> <%- include('../partials/errors', {errors})%>
+        <% } %>
+
+        <div class="col s12">
+          <h1><%= item.name %></h1>
         </div>
 
         <div class="row">
@@ -59,6 +61,27 @@
           </div>
           <div class="col s12 m6 center-align">
             <form action="" method="post">
+              <div class="input-field col s12">
+                <label for="username">Username</label>
+                <input
+                  class="validate"
+                  required
+                  id="username"
+                  name="username"
+                  type="text"
+                  minlength="3"
+                />
+              </div>
+              <div class="input-field col s12">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  required
+                  name="password"
+                  minlength="3"
+                  class="validate"
+                />
+              </div>
               <input
                 class="input-field"
                 type="text"
@@ -72,6 +95,6 @@
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </body>
 </html>
