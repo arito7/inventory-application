@@ -2,6 +2,7 @@ const Item = require('../models/Item');
 const Category = require('../models/Category');
 const async = require('async');
 const { body, validationResult } = require('express-validator');
+const consts = require('../consts');
 
 const categoryValidationSchema = [
   body('name', 'Name must not be empty').trim().isLength({ min: 3 }).escape(),
@@ -102,12 +103,40 @@ exports.delete_get = (req, res, next) => {
 };
 
 exports.delete_post = (req, res, next) => {
-  Category.findByIdAndDelete(req.params.id).exec((err) => {
-    if (err) {
-      next(err);
-    }
-    res.redirect('/catalog/categories');
-  });
+  if (
+    req.body.username === consts.username &&
+    req.body.password === consts.password
+  ) {
+    Category.findByIdAndDelete(req.params.id).exec((err) => {
+      if (err) {
+        next(err);
+      }
+      res.redirect('/catalog/categories');
+    });
+  } else {
+    async.parallel(
+      {
+        category: (cb) => {
+          Category.findById(req.params.id).exec(cb);
+        },
+        count: (cb) => {
+          Item.find({ categories: { $all: req.params.id } }).count(cb);
+        },
+      },
+      (err, results) => {
+        if (err) {
+          next(err);
+        }
+        const error = new Error('Invalid username or password');
+        res.render('delete/category-delete', {
+          title: 'Delete Category',
+          category: results.category,
+          count: results.count,
+          errors: [error],
+        });
+      }
+    );
+  }
 };
 
 exports.categories_get = (req, res, next) => {
