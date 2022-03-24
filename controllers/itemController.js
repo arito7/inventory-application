@@ -2,6 +2,7 @@ const Item = require('../models/Item');
 const Category = require('../models/Category');
 const async = require('async');
 const { body, validationResult } = require('express-validator');
+const consts = require('../consts');
 
 const itemValidationSchema = [
   body('name', 'Item name must not be empty')
@@ -179,12 +180,31 @@ exports.delete_get = (req, res, next) => {
 };
 
 exports.delete_post = (req, res, next) => {
-  Item.findByIdAndDelete(req.params.id).exec((err) => {
-    if (err) {
-      next(err);
-    }
-    res.redirect('/catalog/items');
-  });
+  if (
+    req.body.username === consts.username &&
+    req.body.password === consts.password
+  ) {
+    Item.findByIdAndDelete(req.params.id).exec((err) => {
+      if (err) {
+        next(err);
+      }
+      res.redirect('/catalog/items');
+    });
+  } else {
+    Item.findById(req.params.id)
+      .populate('categories')
+      .exec((err, item) => {
+        if (err) {
+          next(err);
+        }
+        const error = new Error('Invalid username or password.');
+        res.render('delete/item-delete', {
+          title: 'Delete Item',
+          item,
+          errors: [error],
+        });
+      });
+  }
 };
 
 exports.items_get = (req, res, next) => {
