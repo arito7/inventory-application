@@ -20,8 +20,8 @@
 
           <div class="col s12">
             <ul>
-              <% categories.forEach(category => { %> <%-
-              include('./partials/category-chip', {category}) %> <% }) %>
+              <%if(categories.length > 0) {categories.forEach(category => { %>
+              <%- include('./partials/category-chip', {category}) %> <% })} %>
             </ul>
           </div>
         </div>
